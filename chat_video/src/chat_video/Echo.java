@@ -25,7 +25,7 @@ public class Echo
 
 class EchoThread implements Runnable
 {
-    public static Collection<socket> sockets = new ArrayList<socket>();
+    public static Collection<Socket> sockets = new ArrayList<Socket>();
     Socket connection = null;
     DataInputStream dataIn = null;
     DataOutputStream dataOut = null;
@@ -55,16 +55,14 @@ class EchoThread implements Runnable
 
     public static void sendToAll(byte[] byteArray, int q)
     {
-        Iterator<socket> sockIt = sockets.iterator();
+        Iterator<Socket> sockIt;
+        sockIt = sockets.iterator();
         while(sockIt.hasNext())
         {
             Socket temp;
             temp = sockIt.next();
             // skip if this is the sender
-            if (this.connection == temp)
-            {
-                continue;
-            }
+           
             DataOutputStream tempOut = null;
             try
             {
