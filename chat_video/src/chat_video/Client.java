@@ -5,16 +5,9 @@
  */
 package chat_video;
 
-import com.github.sarxos.webcam.Webcam;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import javax.swing.ImageIcon;
-
 /**
  *
- * @author vishal
+ * @author aatmin
  */
 public class Client extends javax.swing.JFrame {
 
@@ -34,27 +27,17 @@ public class Client extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        img_client = new javax.swing.JLabel();
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        img_client.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(img_client, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(img_client, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+            .addGap(0, 300, Short.MAX_VALUE)
         );
 
         pack();
@@ -63,7 +46,7 @@ public class Client extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -93,47 +76,8 @@ public class Client extends javax.swing.JFrame {
                 new Client().setVisible(true);
             }
         });
-        
-        Socket s = new Socket("127.0.0.1",7800);
-        ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
-        
-        ImageIcon ic;
-        BufferedImage br;
-        
-        Webcam cam = Webcam.getDefault();
-        cam.open();
-        
-        
-        
-        
-        while(true)
-        {
-            br=cam.getImage();
-            ic=new ImageIcon(br);
-            out.writeObject(ic);
-            out.flush();
-            img_client.setIcon(ic);
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public static javax.swing.JLabel img_client;
     // End of variables declaration//GEN-END:variables
 }

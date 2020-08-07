@@ -13,7 +13,7 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 
-public class Echo
+public class Audio_Receiver
 {
     public static void main(String[] args) throws Exception
     {

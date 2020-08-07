@@ -13,7 +13,7 @@ import java.io.DataOutputStream;
 import java.net.*;
 import javax.sound.sampled.*;
 
-public class Program
+public class Audio_Sender
 {
   //  public final static String SERVER = JOptionPane.showInputDialog("127.0.0.1");
     public static void main(String[] args) throws Exception
