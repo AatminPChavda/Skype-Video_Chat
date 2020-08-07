@@ -15,7 +15,7 @@ import java.util.*;
 
 public class Audio_Receiver
 {
-    public static void main(String[] args) throws Exception
+    public void receive_audio() throws Exception
     {
         ServerSocket serverSocket = new ServerSocket(3000);
         while(true){Thread echoThread = new Thread(new EchoThread(serverSocket.accept()));

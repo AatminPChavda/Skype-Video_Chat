@@ -5,6 +5,8 @@
  */
 package chat_video;
 
+import java.io.IOException;
+
 /**
  *
  * @author aatmin
@@ -46,7 +48,8 @@ public class Server extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) throws IOException, Exception 
+    {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -76,8 +79,16 @@ public class Server extends javax.swing.JFrame {
                 new Server().setVisible(true);
             }
         });
+    
+        Video_Receiver vs=new Video_Receiver();
+        Audio_Receiver as=new Audio_Receiver();
+    
+        vs.receive_video();
+        as.receive_audio();
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+
 }

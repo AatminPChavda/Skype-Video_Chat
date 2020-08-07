@@ -16,7 +16,7 @@ import javax.sound.sampled.*;
 public class Audio_Sender
 {
   //  public final static String SERVER = JOptionPane.showInputDialog("127.0.0.1");
-    public static void main(String[] args) throws Exception
+    public void send_audio() throws Exception
     {
         AudioFormat af = new AudioFormat(8000.0f,8,1,true,false);
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, af);
