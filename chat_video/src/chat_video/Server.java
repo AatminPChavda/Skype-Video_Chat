@@ -73,12 +73,12 @@ public class Server extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the form 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Server().setVisible(true);
             }
-        });
+        });*/
     
         Video_Receiver vs=new Video_Receiver();
         Audio_Receiver as=new Audio_Receiver();

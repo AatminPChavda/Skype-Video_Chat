@@ -72,12 +72,12 @@ public class Client extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the form 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Client().setVisible(true);
             }
-        });
+        });*/
     
         Video_Sender vc= new Video_Sender();
         Audio_Sender ac= new Audio_Sender();
