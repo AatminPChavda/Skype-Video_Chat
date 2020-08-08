@@ -5,6 +5,8 @@
  */
 package chat_video;
 
+import chat_video.Threads.Audio_Sender_Thread;
+import chat_video.Threads.Video_Sender_Thread;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -116,11 +118,19 @@ public class Client extends javax.swing.JFrame {
             }
         });*/
     
+<<<<<<< Updated upstream
         Thread xvs=new Thread(new x1());
         Thread xas=new Thread(new x2());
         xvs.start();
         xas.start();
+=======
+>>>>>>> Stashed changes
         
+        Thread tvc= new Thread(new Video_Sender_Thread());
+        Thread tac= new Thread(new Audio_Sender_Thread());
+    
+        tvc.start();
+        tac.start();
         
     }
     

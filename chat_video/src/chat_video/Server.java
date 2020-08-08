@@ -5,6 +5,8 @@
  */
 package chat_video;
 
+import chat_video.Threads.Audio_Receiver_Thread;
+import chat_video.Threads.Video_Receiver_Thread;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,6 +15,7 @@ import java.util.logging.Logger;
  *
  * @author aatmin
  */
+<<<<<<< Updated upstream
 class t1 implements Runnable 
     {
         @Override
@@ -51,6 +54,10 @@ class t1 implements Runnable
 
 public class Server extends javax.swing.JFrame {
 
+=======
+public class Server extends javax.swing.JFrame 
+{
+>>>>>>> Stashed changes
     /**
      * Creates new form Server
      */
@@ -86,8 +93,11 @@ public class Server extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+<<<<<<< Updated upstream
 
     
+=======
+>>>>>>> Stashed changes
     
     public static void main(String args[]) throws IOException, Exception 
     {
@@ -121,6 +131,7 @@ public class Server extends javax.swing.JFrame {
             }
         });*/
     
+<<<<<<< Updated upstream
        // Video_Receiver vs=new Video_Receiver();
       // t1 T1=new t1();
         Thread tvs=new Thread(new t1());
@@ -132,6 +143,13 @@ public class Server extends javax.swing.JFrame {
     
         
         
+=======
+        Thread tvs = new Thread(new Video_Receiver_Thread());
+        Thread tas = new Thread(new Audio_Receiver_Thread());
+    
+        tvs.start();
+        tas.start();
+>>>>>>> Stashed changes
         
     }
 

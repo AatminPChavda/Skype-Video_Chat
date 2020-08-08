@@ -20,7 +20,8 @@ public class Video_Receiver extends javax.swing.JFrame {
     /**
      * Creates new form Server
      */
-    public Video_Receiver() {
+    public Video_Receiver() 
+    {
         initComponents();
     }
 
@@ -65,7 +66,8 @@ public class Video_Receiver extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public void receive_video() throws IOException, ClassNotFoundException {
+    public void receive_video() throws IOException, ClassNotFoundException 
+    {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -91,7 +93,8 @@ public class Video_Receiver extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        java.awt.EventQueue.invokeLater(new Runnable() 
+        {
             public void run() {
                 new Video_Receiver().setVisible(true);
             }
@@ -101,25 +104,19 @@ public class Video_Receiver extends javax.swing.JFrame {
         
         System.out.println("wait......");
         
-        
         Socket s=server.accept();
         
         System.out.println("Connect!!..");
         
-        
         ObjectInputStream in=new ObjectInputStream(s.getInputStream());
         ImageIcon ic;
-        
         
         while(true)
         {
             ic =(ImageIcon) in.readObject();
             img_server.setIcon(ic);
         }
-        
-        
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JLabel img_server;
     private javax.swing.JLabel jLabel1;

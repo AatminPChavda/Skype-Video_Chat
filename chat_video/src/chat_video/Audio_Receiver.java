@@ -17,10 +17,20 @@ public class Audio_Receiver
 {
     public void receive_audio() throws Exception
     {
+<<<<<<< Updated upstream
         System.out.println("Audio Receiver Started!!......");
         ServerSocket serverSocket = new ServerSocket(7801);
         while(true){Thread echoThread = new Thread(new EchoThread(serverSocket.accept()));
                     echoThread.start();}
+=======
+        System.out.println("Audio_Receiver Started");
+        ServerSocket serverSocket = new ServerSocket(7801);
+        while(true)
+        {
+            Thread echoThread = new Thread(new EchoThread(serverSocket.accept()));
+            echoThread.start();
+        }
+>>>>>>> Stashed changes
     }
 }
 
@@ -45,7 +55,13 @@ class EchoThread implements Runnable
         byte[] inBytes = new byte[1];
         while(bytesRead != -1)
         {
-            try{bytesRead = dataIn.read(inBytes, 0, inBytes.length);}catch (IOException e){}
+            try
+            {
+                bytesRead = dataIn.read(inBytes, 0, inBytes.length);
+            }
+            catch (IOException e)
+            {}
+            
             if(bytesRead >= 0)
             {
                 sendToAll(inBytes, bytesRead);
@@ -68,7 +84,8 @@ class EchoThread implements Runnable
             try
             {
                 tempOut = new DataOutputStream(temp.getOutputStream());
-            } catch (IOException e1)
+            } 
+            catch (IOException e1)
             {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
