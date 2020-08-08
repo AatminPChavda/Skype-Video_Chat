@@ -17,7 +17,8 @@ public class Audio_Receiver
 {
     public void receive_audio() throws Exception
     {
-        ServerSocket serverSocket = new ServerSocket(7800);
+        System.out.println("Audio Receiver Started!!......");
+        ServerSocket serverSocket = new ServerSocket(7801);
         while(true){Thread echoThread = new Thread(new EchoThread(serverSocket.accept()));
                     echoThread.start();}
     }

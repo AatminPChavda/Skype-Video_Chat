@@ -6,11 +6,48 @@
 package chat_video;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author aatmin
  */
+
+class x1 implements Runnable 
+    {
+        @Override
+        public void run() 
+        {
+            
+            try {
+                Video_Sender vs=new Video_Sender();
+                vs.send_video();
+            } catch (IOException ex) {
+                Logger.getLogger(x1.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                
+        }
+    }
+         
+
+
+    class x2 implements Runnable
+    {
+        public void run()
+        {
+            
+            try {
+                Audio_Sender as=new Audio_Sender();
+                as.send_audio();
+            } catch (Exception ex) {
+                Logger.getLogger(x2.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        
+    }
+
 public class Client extends javax.swing.JFrame {
 
     /**
@@ -79,11 +116,10 @@ public class Client extends javax.swing.JFrame {
             }
         });*/
     
-        Video_Sender vc= new Video_Sender();
-        Audio_Sender ac= new Audio_Sender();
-    
-        vc.send_video();
-        ac.send_audio();
+        Thread xvs=new Thread(new x1());
+        Thread xas=new Thread(new x2());
+        xvs.start();
+        xas.start();
         
         
     }

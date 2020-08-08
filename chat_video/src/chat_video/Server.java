@@ -6,11 +6,49 @@
 package chat_video;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author aatmin
  */
+class t1 implements Runnable 
+    {
+        @Override
+        public void run() 
+        {
+            try {
+                Video_Receiver vs=new Video_Receiver();
+                vs.receive_video();
+            } catch (IOException ex) {
+                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+         
+
+
+    class t2 implements Runnable
+    {
+        public void run()
+        {
+            try {
+                Audio_Receiver as=new Audio_Receiver();
+                as.receive_audio();
+            } catch (Exception ex) {
+                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+    }
+
+
+
+
+
 public class Server extends javax.swing.JFrame {
 
     /**
@@ -48,6 +86,9 @@ public class Server extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+
+    
+    
     public static void main(String args[]) throws IOException, Exception 
     {
         /* Set the Nimbus look and feel */
@@ -80,11 +121,17 @@ public class Server extends javax.swing.JFrame {
             }
         });*/
     
-        Video_Receiver vs=new Video_Receiver();
-        Audio_Receiver as=new Audio_Receiver();
+       // Video_Receiver vs=new Video_Receiver();
+      // t1 T1=new t1();
+        Thread tvs=new Thread(new t1());
+        Thread tas=new Thread(new t2());
+        tvs.start();
+        tas.start();
+        
+        
     
-        vs.receive_video();
-        as.receive_audio();
+        
+        
         
     }
 

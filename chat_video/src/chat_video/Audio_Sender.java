@@ -22,7 +22,7 @@ public class Audio_Sender
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, af);
         TargetDataLine microphone = (TargetDataLine)AudioSystem.getLine(info);
         microphone.open(af);
-        Socket conn = new Socket("127.0.0.1",7800);
+        Socket conn = new Socket("127.0.0.1",7801);
         microphone.start();
         DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
         int bytesRead = 0;
