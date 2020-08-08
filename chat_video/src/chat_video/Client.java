@@ -8,48 +8,11 @@ package chat_video;
 import chat_video.Threads.Audio_Sender_Thread;
 import chat_video.Threads.Video_Sender_Thread;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author aatmin
  */
-
-class x1 implements Runnable 
-    {
-        @Override
-        public void run() 
-        {
-            
-            try {
-                Video_Sender vs=new Video_Sender();
-                vs.send_video();
-            } catch (IOException ex) {
-                Logger.getLogger(x1.class.getName()).log(Level.SEVERE, null, ex);
-            }
-                
-        }
-    }
-         
-
-
-    class x2 implements Runnable
-    {
-        public void run()
-        {
-            
-            try {
-                Audio_Sender as=new Audio_Sender();
-                as.send_audio();
-            } catch (Exception ex) {
-                Logger.getLogger(x2.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-        }
-        
-    }
-
 public class Client extends javax.swing.JFrame {
 
     /**
@@ -118,13 +81,6 @@ public class Client extends javax.swing.JFrame {
             }
         });*/
     
-<<<<<<< Updated upstream
-        Thread xvs=new Thread(new x1());
-        Thread xas=new Thread(new x2());
-        xvs.start();
-        xas.start();
-=======
->>>>>>> Stashed changes
         
         Thread tvc= new Thread(new Video_Sender_Thread());
         Thread tac= new Thread(new Audio_Sender_Thread());

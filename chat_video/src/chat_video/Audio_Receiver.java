@@ -17,12 +17,6 @@ public class Audio_Receiver
 {
     public void receive_audio() throws Exception
     {
-<<<<<<< Updated upstream
-        System.out.println("Audio Receiver Started!!......");
-        ServerSocket serverSocket = new ServerSocket(7801);
-        while(true){Thread echoThread = new Thread(new EchoThread(serverSocket.accept()));
-                    echoThread.start();}
-=======
         System.out.println("Audio_Receiver Started");
         ServerSocket serverSocket = new ServerSocket(7801);
         while(true)
@@ -30,7 +24,6 @@ public class Audio_Receiver
             Thread echoThread = new Thread(new EchoThread(serverSocket.accept()));
             echoThread.start();
         }
->>>>>>> Stashed changes
     }
 }
 

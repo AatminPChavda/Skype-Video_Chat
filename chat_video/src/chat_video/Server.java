@@ -8,56 +8,13 @@ package chat_video;
 import chat_video.Threads.Audio_Receiver_Thread;
 import chat_video.Threads.Video_Receiver_Thread;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author aatmin
  */
-<<<<<<< Updated upstream
-class t1 implements Runnable 
-    {
-        @Override
-        public void run() 
-        {
-            try {
-                Video_Receiver vs=new Video_Receiver();
-                vs.receive_video();
-            } catch (IOException ex) {
-                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
-         
-
-
-    class t2 implements Runnable
-    {
-        public void run()
-        {
-            try {
-                Audio_Receiver as=new Audio_Receiver();
-                as.receive_audio();
-            } catch (Exception ex) {
-                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        
-    }
-
-
-
-
-
-public class Server extends javax.swing.JFrame {
-
-=======
 public class Server extends javax.swing.JFrame 
 {
->>>>>>> Stashed changes
     /**
      * Creates new form Server
      */
@@ -93,11 +50,6 @@ public class Server extends javax.swing.JFrame
     /**
      * @param args the command line arguments
      */
-<<<<<<< Updated upstream
-
-    
-=======
->>>>>>> Stashed changes
     
     public static void main(String args[]) throws IOException, Exception 
     {
@@ -131,25 +83,11 @@ public class Server extends javax.swing.JFrame
             }
         });*/
     
-<<<<<<< Updated upstream
-       // Video_Receiver vs=new Video_Receiver();
-      // t1 T1=new t1();
-        Thread tvs=new Thread(new t1());
-        Thread tas=new Thread(new t2());
-        tvs.start();
-        tas.start();
-        
-        
-    
-        
-        
-=======
         Thread tvs = new Thread(new Video_Receiver_Thread());
         Thread tas = new Thread(new Audio_Receiver_Thread());
     
         tvs.start();
         tas.start();
->>>>>>> Stashed changes
         
     }
 
