@@ -1,5 +1,11 @@
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -39,8 +45,8 @@ public class LoginForm extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jPasswordField1 = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jButton_LOGIN = new javax.swing.JButton();
+        jButton_CANCEL = new javax.swing.JButton();
         jLabelRegister = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -118,15 +124,25 @@ public class LoginForm extends javax.swing.JFrame {
         jPasswordField1.setBackground(new java.awt.Color(108, 122, 137));
         jPasswordField1.setForeground(new java.awt.Color(255, 255, 255));
 
-        jButton1.setBackground(new java.awt.Color(34, 167, 220));
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(240, 240, 240));
-        jButton1.setText("Login");
+        jButton_LOGIN.setBackground(new java.awt.Color(34, 167, 220));
+        jButton_LOGIN.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButton_LOGIN.setForeground(new java.awt.Color(240, 240, 240));
+        jButton_LOGIN.setText("Login");
+        jButton_LOGIN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_LOGINActionPerformed(evt);
+            }
+        });
 
-        jButton2.setBackground(new java.awt.Color(242, 38, 39));
-        jButton2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(240, 240, 240));
-        jButton2.setText("Cancel");
+        jButton_CANCEL.setBackground(new java.awt.Color(242, 38, 39));
+        jButton_CANCEL.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButton_CANCEL.setForeground(new java.awt.Color(240, 240, 240));
+        jButton_CANCEL.setText("Cancel");
+        jButton_CANCEL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_CANCELActionPerformed(evt);
+            }
+        });
 
         jLabelRegister.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabelRegister.setForeground(new java.awt.Color(255, 255, 255));
@@ -150,13 +166,12 @@ public class LoginForm extends javax.swing.JFrame {
                 .addGap(14, 14, 14)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabelRegister, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jPasswordField1, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                            .addComponent(jButton2)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
-                            .addComponent(jButton1))
-                        .addComponent(jTextField1)))
+                    .addComponent(jPasswordField1)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButton_CANCEL)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                        .addComponent(jButton_LOGIN))
+                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap(38, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -172,8 +187,8 @@ public class LoginForm extends javax.swing.JFrame {
                     .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(jButton_LOGIN)
+                    .addComponent(jButton_CANCEL))
                 .addGap(18, 18, 18)
                 .addComponent(jLabelRegister)
                 .addContainerGap(16, Short.MAX_VALUE))
@@ -224,6 +239,86 @@ public class LoginForm extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jLabelRegisterMouseClicked
 
+    private void jButton_CANCELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_CANCELActionPerformed
+       
+        System.exit(0);
+    }//GEN-LAST:event_jButton_CANCELActionPerformed
+
+    private void jButton_LOGINActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LOGINActionPerformed
+      
+        
+        try {
+            //  System.exit(0);
+            
+            PreparedStatement ps;
+            ResultSet rs;
+            String uname = jTextField1.getText();
+            String pass = String.valueOf(jPasswordField1.getPassword());
+            
+            String query = "SELECT * FROM `the_app_users` WHERE `u_uname` =? AND `u_pass` =?";
+            
+            
+            ps = MyConnection.getConnection().prepareStatement(query);
+            
+             ps.setString(1, uname);
+             ps.setString(2, pass);
+            rs = ps.executeQuery();
+            
+             if(rs.next())
+            {
+                    HOME_JFrame mf = new HOME_JFrame();
+                    mf.setVisible(true);
+                    mf.pack();
+                    mf.setLocationRelativeTo(null);
+                    mf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    mf.jLabel1.setText("Welcome < "+uname+" >");
+                    
+                    this.dispose();
+            }
+            else{
+                    JOptionPane.showMessageDialog(null, "Incorrect Username Or Password", "Login Failed", 2);
+                }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+            
+        
+    }//GEN-LAST:event_jButton_LOGINActionPerformed
+
+    //function to cheack user name if already exist
+      public boolean checkUsername(String username)
+    {
+        PreparedStatement ps;
+        ResultSet rs;
+        boolean checkUser = false;
+        String query = "SELECT * FROM `the_app_users` WHERE `u_uname` =?";
+        
+        try {
+            ps = MyConnection.getConnection().prepareStatement(query);
+            ps.setString(1, username);
+            
+            rs = ps.executeQuery();
+            
+            if(rs.next())
+            {
+                checkUser = true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(RegisterForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         return checkUser;
+    }
+
+
+
+
+    
+    
+    
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -260,8 +355,8 @@ public class LoginForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton_CANCEL;
+    private javax.swing.JButton jButton_LOGIN;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
