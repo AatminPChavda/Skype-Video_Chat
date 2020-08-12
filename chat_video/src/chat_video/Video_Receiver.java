@@ -5,6 +5,7 @@
  */
 package chat_video;
 
+import java.awt.Image;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
@@ -114,6 +115,9 @@ public class Video_Receiver extends javax.swing.JFrame {
         while(true)
         {
             ic =(ImageIcon) in.readObject();
+            Image i = ic.getImage();
+            Image ir = i.getScaledInstance(img_server.getWidth(), img_server.getHeight(),Image.SCALE_SMOOTH);
+            ic = new ImageIcon(ir);
             img_server.setIcon(ic);
         }
     }
