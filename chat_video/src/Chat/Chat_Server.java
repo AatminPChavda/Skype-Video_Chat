@@ -12,6 +12,9 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
@@ -19,8 +22,10 @@ import java.util.Calendar;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
@@ -29,6 +34,7 @@ import javax.swing.border.EmptyBorder;
  *
  * @author aatmin
  */
+
 public class Chat_Server extends javax.swing.JFrame {
 
     /**
@@ -40,10 +46,13 @@ public class Chat_Server extends javax.swing.JFrame {
     
     static Box vertical = Box.createVerticalBox();
     
-    static ServerSocket skt;
-    static Socket s;
+    static ServerSocket sktc,sktf;
+    static Socket sc,sf;
     static DataInputStream din;
     static DataOutputStream dout;
+    
+    static ObjectOutputStream out;
+    static ObjectInputStream in;
     
     Boolean typing;
     
@@ -59,7 +68,7 @@ public class Chat_Server extends javax.swing.JFrame {
        i2 = i1.getImage().getScaledInstance(l2.getWidth(), l2.getHeight(), Image.SCALE_DEFAULT);
        i3 = new ImageIcon(i2);
        l2.setIcon(i3);
-       
+       /*
        i1 = new ImageIcon(ClassLoader.getSystemResource("Chat/icons/video.png"));
        i2 = i1.getImage().getScaledInstance(l5.getWidth(), l5.getHeight(), Image.SCALE_DEFAULT);
        i3 = new ImageIcon(i2);
@@ -74,7 +83,7 @@ public class Chat_Server extends javax.swing.JFrame {
        i2 = i1.getImage().getScaledInstance(l7.getWidth(), l7.getHeight(), Image.SCALE_DEFAULT);
        i3 = new ImageIcon(i2);
        l7.setIcon(i3);
-       
+       */
     }
 
     /**
@@ -89,14 +98,14 @@ public class Chat_Server extends javax.swing.JFrame {
         p1 = new javax.swing.JPanel();
         l1 = new javax.swing.JLabel();
         l2 = new javax.swing.JLabel();
-        l5 = new javax.swing.JLabel();
-        l6 = new javax.swing.JLabel();
-        l7 = new javax.swing.JLabel();
         l3 = new javax.swing.JLabel();
         l4 = new javax.swing.JLabel();
-        a1 = new javax.swing.JPanel();
+        ba = new javax.swing.JButton();
+        bv = new javax.swing.JButton();
+        bf = new javax.swing.JButton();
         t1 = new javax.swing.JTextField();
         b1 = new javax.swing.JButton();
+        a1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(java.awt.Color.white);
@@ -116,12 +125,6 @@ public class Chat_Server extends javax.swing.JFrame {
         l1.setBounds(5, 17, 30, 30);
         p1.add(l2);
         l2.setBounds(40, 5, 60, 60);
-        p1.add(l5);
-        l5.setBounds(290, 20, 30, 30);
-        p1.add(l6);
-        l6.setBounds(350, 20, 35, 30);
-        p1.add(l7);
-        l7.setBounds(410, 20, 13, 25);
 
         l3.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         l3.setForeground(new java.awt.Color(254, 254, 254));
@@ -135,18 +138,22 @@ public class Chat_Server extends javax.swing.JFrame {
         p1.add(l4);
         l4.setBounds(110, 35, 100, 20);
 
-        a1.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
+        ba.setText("A");
+        p1.add(ba);
+        ba.setBounds(350, 20, 30, 30);
 
-        javax.swing.GroupLayout a1Layout = new javax.swing.GroupLayout(a1);
-        a1.setLayout(a1Layout);
-        a1Layout.setHorizontalGroup(
-            a1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 440, Short.MAX_VALUE)
-        );
-        a1Layout.setVerticalGroup(
-            a1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 570, Short.MAX_VALUE)
-        );
+        bv.setText("V");
+        p1.add(bv);
+        bv.setBounds(290, 20, 30, 30);
+
+        bf.setText("F");
+        bf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bfActionPerformed(evt);
+            }
+        });
+        p1.add(bf);
+        bf.setBounds(410, 20, 30, 30);
 
         t1.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
 
@@ -160,6 +167,9 @@ public class Chat_Server extends javax.swing.JFrame {
             }
         });
 
+        a1.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
+        a1.setLayout(new java.awt.BorderLayout());
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -168,7 +178,7 @@ public class Chat_Server extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(a1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(a1, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(t1, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(5, 5, 5)
@@ -179,7 +189,7 @@ public class Chat_Server extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(p1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
-                .addComponent(a1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(a1, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(t1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -201,7 +211,7 @@ public class Chat_Server extends javax.swing.JFrame {
             
             JPanel p2 = formatLabel(out);
             
-            a1.setLayout(new BorderLayout());
+            //a1.setLayout(new BorderLayout());
             
             JPanel right = new JPanel(new BorderLayout());
             right.add(p2, BorderLayout.LINE_END);
@@ -209,6 +219,9 @@ public class Chat_Server extends javax.swing.JFrame {
             vertical.add(Box.createVerticalStrut(15));
             
             a1.add(vertical, BorderLayout.PAGE_START);
+            
+            JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(a1);
+            topFrame.validate();
             
             //a1.add(p2);
             dout.writeUTF(out);
@@ -217,34 +230,16 @@ public class Chat_Server extends javax.swing.JFrame {
             System.out.println(e);
         }
     }//GEN-LAST:event_b1ActionPerformed
+
+    private void bfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bfActionPerformed
+        // TODO add your handling code here:
+        
+        
+    }//GEN-LAST:event_bfActionPerformed
     
     /**
      * @param args the command line arguments
      */
-    
-    /*
-    public void actionPerformed(ActionEvent ae){
-        try{
-            String out = t1.getText();
-            
-            JPanel p2 = formatLabel(out);
-            
-            a1.setLayout(new BorderLayout());
-            
-            JPanel right = new JPanel(new BorderLayout());
-            right.add(p2, BorderLayout.LINE_END);
-            vertical.add(right);
-            vertical.add(Box.createVerticalStrut(15));
-            
-            a1.add(vertical, BorderLayout.PAGE_START);
-            
-            //a1.add(p2);
-            dout.writeUTF(out);
-            t1.setText("");
-        }catch(Exception e){
-            System.out.println(e);
-        }
-    }*/
     
     public static JPanel formatLabel(String out){
         JPanel p3 = new JPanel();
@@ -256,16 +251,64 @@ public class Chat_Server extends javax.swing.JFrame {
         l1.setOpaque(true);
         l1.setBorder(new EmptyBorder(15,15,15,50));
         
-        /*Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         
         JLabel l2 = new JLabel();
-        l2.setText(sdf.format(cal.getTime()));*/
+        l2.setText(sdf.format(cal.getTime()));
         
         p3.add(l1);
-        //p3.add(l2);
+        p3.add(l2);
         return p3;
     }
+    
+    public static class ServerThread extends Thread
+    {
+    Socket s=null;
+    ObjectInputStream in;
+    
+    public ServerThread(Socket s,ObjectInputStream in)
+    {
+        this.s=s;
+        this.in=in;
+    }
+        
+    public void run()
+    {
+        try
+        {
+                
+                Data data ;
+                //String name = data.getName();
+                //txt.append("New client " + name + " has been connected ...\n");
+                while (true) 
+                {
+                    data = (Data) in.readObject();
+                    System.out.println("File Received");
+                    JFileChooser ch = new JFileChooser();
+                    JFrame top = (JFrame) SwingUtilities.getWindowAncestor(a1);
+                    int c = ch.showSaveDialog(top);
+                    if (c == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        FileOutputStream out = new FileOutputStream(ch.getSelectedFile());
+                        out.write(data.getFile());
+                        out.close();
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(top, e, "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                    
+                    
+                    
+                }
+            }
+            catch(Exception ie)
+            {
+                System.out.println("socket close error");
+            }
+        }
+    }
+    
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -300,26 +343,30 @@ public class Chat_Server extends javax.swing.JFrame {
         
         String msginput = "";
         try{
-            skt = new ServerSocket(6001);
+            sktc = new ServerSocket(6001);
+            sktf = new ServerSocket(8003);
             while(true)
             {
-                s = skt.accept();
-                din = new DataInputStream(s.getInputStream());
-                dout = new DataOutputStream(s.getOutputStream());
+                sc = sktc.accept();
+                sf = sktf.accept();
                 
-                System.out.println("2");
+                din = new DataInputStream(sc.getInputStream());
+                dout = new DataOutputStream(sc.getOutputStream());
+                in = new ObjectInputStream(sf.getInputStream());
+                
+                ServerThread st = new ServerThread(sf,in);
+                st.start();
                 
 	        while(true)
                 {
 	                msginput = din.readUTF();
                         JPanel p2 = formatLabel(msginput);
-                        System.out.println("3");
+                        System.out.println("T");
                         JPanel left = new JPanel(new BorderLayout());
                         left.add(p2, BorderLayout.LINE_START);
                         vertical.add(left);
                         JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(a1);
                         topFrame.validate();
-                        System.out.println("4");
             	}
                 
             }
@@ -328,15 +375,15 @@ public class Chat_Server extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private static javax.swing.JPanel a1;
+    public static javax.swing.JPanel a1;
     private javax.swing.JButton b1;
+    private javax.swing.JButton ba;
+    private javax.swing.JButton bf;
+    private javax.swing.JButton bv;
     private javax.swing.JLabel l1;
     private javax.swing.JLabel l2;
     private javax.swing.JLabel l3;
     private javax.swing.JLabel l4;
-    private javax.swing.JLabel l5;
-    private javax.swing.JLabel l6;
-    private javax.swing.JLabel l7;
     private javax.swing.JPanel p1;
     private javax.swing.JTextField t1;
     // End of variables declaration//GEN-END:variables

@@ -23,15 +23,14 @@ public class Chat_Client extends javax.swing.JFrame{
 
     ImageIcon i1,i3;
     Image i2;
-    static JLabel txt;
-    static JPanel p2,p3,p4,left,right;
-    static JFrame topFrame;
     
     static Box vertical = Box.createVerticalBox();
     
-    static Socket s;
+    static Socket sc,sf;
     static DataInputStream din;
     static DataOutputStream dout;
+    
+    static ObjectOutputStream out;
     
     Boolean typing;
     
@@ -58,11 +57,11 @@ public class Chat_Client extends javax.swing.JFrame{
        i2 = i1.getImage().getScaledInstance(l2.getWidth(), l2.getHeight(), Image.SCALE_DEFAULT);
        i3 = new ImageIcon(i2);
        l2.setIcon(i3);
-       
+       /*
        i1 = new ImageIcon(ClassLoader.getSystemResource("Chat/icons/video.png"));
-       i2 = i1.getImage().getScaledInstance(l5.getWidth(), l5.getHeight(), Image.SCALE_DEFAULT);
+       i2 = i1.getImage().getScaledInstance(bv.getWidth(), bv.getHeight(), Image.SCALE_DEFAULT);
        i3 = new ImageIcon(i2);
-       l5.setIcon(i3);
+       bv.setIcon(i3);
        
        i1 = new ImageIcon(ClassLoader.getSystemResource("Chat/icons/phone.png"));
        i2 = i1.getImage().getScaledInstance(l6.getWidth(), l6.getHeight(), Image.SCALE_DEFAULT);
@@ -72,7 +71,7 @@ public class Chat_Client extends javax.swing.JFrame{
        i1 = new ImageIcon(ClassLoader.getSystemResource("Chat/icons/3icon.png"));
        i2 = i1.getImage().getScaledInstance(l7.getWidth(), l7.getHeight(), Image.SCALE_DEFAULT);
        i3 = new ImageIcon(i2);
-       l7.setIcon(i3);
+       l7.setIcon(i3);*/
  
     }
 
@@ -88,14 +87,14 @@ public class Chat_Client extends javax.swing.JFrame{
         p1 = new javax.swing.JPanel();
         l1 = new javax.swing.JLabel();
         l2 = new javax.swing.JLabel();
-        l5 = new javax.swing.JLabel();
-        l6 = new javax.swing.JLabel();
-        l7 = new javax.swing.JLabel();
         l3 = new javax.swing.JLabel();
         l4 = new javax.swing.JLabel();
-        a1 = new javax.swing.JPanel();
+        ba = new javax.swing.JButton();
+        bv = new javax.swing.JButton();
+        bf = new javax.swing.JButton();
         t1 = new javax.swing.JTextField();
         b1 = new javax.swing.JButton();
+        a1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(254, 254, 254));
@@ -115,12 +114,6 @@ public class Chat_Client extends javax.swing.JFrame{
         l1.setBounds(5, 17, 30, 30);
         p1.add(l2);
         l2.setBounds(40, 5, 60, 60);
-        p1.add(l5);
-        l5.setBounds(290, 20, 30, 30);
-        p1.add(l6);
-        l6.setBounds(350, 20, 35, 30);
-        p1.add(l7);
-        l7.setBounds(410, 20, 13, 25);
 
         l3.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         l3.setForeground(new java.awt.Color(254, 254, 254));
@@ -134,8 +127,22 @@ public class Chat_Client extends javax.swing.JFrame{
         p1.add(l4);
         l4.setBounds(110, 35, 100, 20);
 
-        a1.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
-        a1.setLayout(new java.awt.BorderLayout(5, 75));
+        ba.setText("A");
+        p1.add(ba);
+        ba.setBounds(350, 20, 30, 30);
+
+        bv.setText("V");
+        p1.add(bv);
+        bv.setBounds(290, 20, 30, 30);
+
+        bf.setText("F");
+        bf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bfActionPerformed(evt);
+            }
+        });
+        p1.add(bf);
+        bf.setBounds(410, 20, 30, 30);
 
         t1.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
 
@@ -148,6 +155,9 @@ public class Chat_Client extends javax.swing.JFrame{
                 b1ActionPerformed(evt);
             }
         });
+
+        a1.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
+        a1.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -190,16 +200,19 @@ public class Chat_Client extends javax.swing.JFrame{
         try{
             String out = t1.getText();
             
-            p2 = formatLabel(out);
+            JPanel p2 = formatLabel(out);
             
             //a1.setLayout(new BorderLayout());
             
-            right = new JPanel(new BorderLayout());
+            JPanel right = new JPanel(new BorderLayout());
             right.add(p2, BorderLayout.LINE_END);
             vertical.add(right);
             vertical.add(Box.createVerticalStrut(15));
             
             a1.add(vertical, BorderLayout.PAGE_START);
+            
+            JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(a1);
+            topFrame.validate();
             
             //a1.add(p2);
             dout.writeUTF(out);
@@ -208,50 +221,51 @@ public class Chat_Client extends javax.swing.JFrame{
             System.out.println(e);
         }
     }//GEN-LAST:event_b1ActionPerformed
-    /*
-    @Override
-    public void actionPerformed(ActionEvent ae){
+
+    private void bfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bfActionPerformed
+        // TODO add your handling code here:
         
-        try{
-            String out = t1.getText();
-            
-            p2 = formatLabel(out);
-            
-            //a1.setLayout(new BorderLayout());
-            
-            right = new JPanel(new BorderLayout());
-            right.add(p2, BorderLayout.LINE_END);
-            vertical.add(right);
-            vertical.add(Box.createVerticalStrut(15));
-            
-            a1.add(vertical, BorderLayout.PAGE_START);
-            
-            //a1.add(p2);
-            dout.writeUTF(out);
-            t1.setText("");
-        }catch(Exception e){
-            System.out.println(e);
+        try {
+            JFileChooser ch = new JFileChooser();
+            int c = ch.showOpenDialog(this);
+            if (c == JFileChooser.APPROVE_OPTION) {
+                File f = ch.getSelectedFile();
+                FileInputStream in = new FileInputStream(f);
+                byte b[] = new byte[in.available()];
+                in.read(b);
+                Data data = new Data();
+                //data.setStatus(jComboBox1.getSelectedItem() + "");
+                //data.setName(txtName.getText().trim());
+                data.setFile(b);
+                out.writeObject(data);
+                out.flush();
+                //txt.append("Sent a file ..\n");
+                System.out.println("Sent a file ...");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e, "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }*/
-    
+        
+    }//GEN-LAST:event_bfActionPerformed
+
     public static JPanel formatLabel(String out){
-        p3 = new JPanel();
+        JPanel p3 = new JPanel();
         p3.setLayout(new BoxLayout(p3, BoxLayout.Y_AXIS));
         
-        txt = new JLabel("<html><p style = \"width : 150px\">"+out+"</p></html>");
-        txt.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        txt.setBackground(new Color(37, 211, 102));
-        txt.setOpaque(true);
-        txt.setBorder(new EmptyBorder(15,15,15,50));
-        /*
+        JLabel l1 = new JLabel("<html><p style = \"width : 150px\">"+out+"</p></html>");
+        l1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        l1.setBackground(new Color(37, 211, 102));
+        l1.setOpaque(true);
+        l1.setBorder(new EmptyBorder(15,15,15,50));
+        
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         
         JLabel l2 = new JLabel();
-        l2.setText(sdf.format(cal.getTime()));*/
+        l2.setText(sdf.format(cal.getTime()));
         
-        p3.add(txt);
-        //p3.add(l2);
+        p3.add(l1);
+        p3.add(l2);
         return p3;
     }
     
@@ -288,29 +302,30 @@ public class Chat_Client extends javax.swing.JFrame{
         
         try{
             
-            s = new Socket("127.0.0.1", 6001);
-            din  = new DataInputStream(s.getInputStream());
-            dout = new DataOutputStream(s.getOutputStream());
+            sc = new Socket("127.0.0.1", 6001);
+            sf = new Socket("127.0.0.1", 8003);
+            din  = new DataInputStream(sc.getInputStream());
+            dout = new DataOutputStream(sc.getOutputStream());
+            out = new ObjectOutputStream(sf.getOutputStream());
             
             String msginput = "";
-            System.out.println("D");
-	    while(true)
-            {
+            
+	    while(true){
                 //a1.setLayout(new BorderLayout());
 	        msginput = din.readUTF();
-            	p4 = formatLabel(msginput);
-                left = new JPanel(new BorderLayout());
-                left.add(p4, BorderLayout.LINE_START);
-                
-                
+            	JPanel p2 = formatLabel(msginput);
+                JPanel left = new JPanel(new BorderLayout());
+                left.add(p2, BorderLayout.LINE_START);
                 
                 vertical.add(left);
                 vertical.add(Box.createVerticalStrut(15));
                 a1.add(vertical, BorderLayout.PAGE_START);
-                topFrame = (JFrame) SwingUtilities.getWindowAncestor(a1);
+                JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(a1);
                 topFrame.validate();
+                 
+                System.out.println("4");
+
                 
-                System.out.println("2");
             }
             
         }catch(Exception e){}
@@ -322,13 +337,13 @@ public class Chat_Client extends javax.swing.JFrame{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private static javax.swing.JPanel a1;
     private javax.swing.JButton b1;
+    private javax.swing.JButton ba;
+    private javax.swing.JButton bf;
+    private javax.swing.JButton bv;
     private javax.swing.JLabel l1;
     private javax.swing.JLabel l2;
     private javax.swing.JLabel l3;
     private javax.swing.JLabel l4;
-    private javax.swing.JLabel l5;
-    private javax.swing.JLabel l6;
-    private javax.swing.JLabel l7;
     private javax.swing.JPanel p1;
     private javax.swing.JTextField t1;
     // End of variables declaration//GEN-END:variables
