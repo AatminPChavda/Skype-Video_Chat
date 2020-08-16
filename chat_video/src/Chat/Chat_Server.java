@@ -147,6 +147,11 @@ public class Chat_Server extends javax.swing.JFrame {
         bv.setBounds(290, 20, 30, 30);
 
         bf.setText("F");
+        bf.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bfMouseClicked(evt);
+            }
+        });
         bf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bfActionPerformed(evt);
@@ -232,10 +237,15 @@ public class Chat_Server extends javax.swing.JFrame {
     }//GEN-LAST:event_b1ActionPerformed
 
     private void bfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bfActionPerformed
-        // TODO add your handling code here:
+        
+        System.exit(0);
         
         
     }//GEN-LAST:event_bfActionPerformed
+
+    private void bfMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bfMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bfMouseClicked
     
     /**
      * @param args the command line arguments

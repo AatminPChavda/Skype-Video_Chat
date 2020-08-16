@@ -1,3 +1,5 @@
+package Client_login;
+
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -270,8 +272,8 @@ public class LoginForm extends javax.swing.JFrame {
                     mf.setVisible(true);
                     mf.pack();
                     mf.setLocationRelativeTo(null);
-                    mf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                    mf.jLabel1.setText("Welcome < "+uname+" >");
+                 //   mf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    mf.jLabel1.setText("Welcome "+uname+" ");
                     
                     this.dispose();
             }

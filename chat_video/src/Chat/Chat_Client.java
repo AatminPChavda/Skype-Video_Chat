@@ -5,6 +5,7 @@
  */
 package Chat;
 
+import chat_video.Client;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -132,6 +133,11 @@ public class Chat_Client extends javax.swing.JFrame{
         ba.setBounds(350, 20, 30, 30);
 
         bv.setText("V");
+        bv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bvActionPerformed(evt);
+            }
+        });
         p1.add(bv);
         bv.setBounds(290, 20, 30, 30);
 
@@ -247,6 +253,12 @@ public class Chat_Client extends javax.swing.JFrame{
         }
         
     }//GEN-LAST:event_bfActionPerformed
+
+    private void bvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bvActionPerformed
+        // Video calling code
+        Client cv=new Client();
+        cv.setVisible(true);
+    }//GEN-LAST:event_bvActionPerformed
 
     public static JPanel formatLabel(String out){
         JPanel p3 = new JPanel();
