@@ -31,6 +31,7 @@ public class Chat_Client extends javax.swing.JFrame{
     static DataInputStream din;
     static DataOutputStream dout;
     
+    static ObjectInputStream in;
     static ObjectOutputStream out;
     
     Boolean typing;
@@ -236,9 +237,9 @@ public class Chat_Client extends javax.swing.JFrame{
             int c = ch.showOpenDialog(this);
             if (c == JFileChooser.APPROVE_OPTION) {
                 File f = ch.getSelectedFile();
-                FileInputStream in = new FileInputStream(f);
-                byte b[] = new byte[in.available()];
-                in.read(b);
+                FileInputStream fin = new FileInputStream(f);
+                byte b[] = new byte[fin.available()];
+                fin.read(b);
                 Data data = new Data();
                 //data.setStatus(jComboBox1.getSelectedItem() + "");
                 //data.setName(txtName.getText().trim());
@@ -260,6 +261,53 @@ public class Chat_Client extends javax.swing.JFrame{
         cv.setVisible(true);
     }//GEN-LAST:event_bvActionPerformed
 
+    public static class ClientThread extends Thread
+    {
+    Socket s=null;
+    ObjectInputStream in;
+    
+    public ClientThread(Socket s,ObjectInputStream in)
+    {
+        this.s=s;
+        this.in=in;
+    }
+        
+    public void run()
+    {
+        try
+        {
+                
+                Data data ;
+                //String name = data.getName();
+                //txt.append("New client " + name + " has been connected ...\n");
+                while (true) 
+                {
+                    data = (Data) in.readObject();
+                    System.out.println("File Received");
+                    JFileChooser ch = new JFileChooser();
+                    JFrame top = (JFrame) SwingUtilities.getWindowAncestor(a1);
+                    int c = ch.showSaveDialog(top);
+                    if (c == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        FileOutputStream out = new FileOutputStream(ch.getSelectedFile());
+                        out.write(data.getFile());
+                        out.close();
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(top, e, "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                    
+                    
+                    
+                }
+            }
+            catch(Exception ie)
+            {
+                System.out.println("socket close error");
+            }
+        }
+    }
+    
     public static JPanel formatLabel(String out){
         JPanel p3 = new JPanel();
         p3.setLayout(new BoxLayout(p3, BoxLayout.Y_AXIS));
@@ -316,9 +364,18 @@ public class Chat_Client extends javax.swing.JFrame{
             
             sc = new Socket("127.0.0.1", 6001);
             sf = new Socket("127.0.0.1", 8003);
+            
             din  = new DataInputStream(sc.getInputStream());
+            System.out.println("X");
             dout = new DataOutputStream(sc.getOutputStream());
+            System.out.println("Y");
             out = new ObjectOutputStream(sf.getOutputStream());
+            System.out.println("Z");
+            in = new ObjectInputStream(sf.getInputStream());
+            System.out.println("W");
+            
+            ClientThread ct = new ClientThread(sf,in);
+            ct.start();
             
             String msginput = "";
             

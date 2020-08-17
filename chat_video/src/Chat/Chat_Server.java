@@ -5,6 +5,7 @@
  */
 package Chat;
 
+import static Chat.Chat_Client.out;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -12,6 +13,8 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -238,7 +241,26 @@ public class Chat_Server extends javax.swing.JFrame {
 
     private void bfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bfActionPerformed
         
-        System.exit(0);
+        try {
+            JFileChooser ch = new JFileChooser();
+            int c = ch.showOpenDialog(this);
+            if (c == JFileChooser.APPROVE_OPTION) {
+                File f = ch.getSelectedFile();
+                FileInputStream in = new FileInputStream(f);
+                byte b[] = new byte[in.available()];
+                in.read(b);
+                Data data = new Data();
+                //data.setStatus(jComboBox1.getSelectedItem() + "");
+                //data.setName(txtName.getText().trim());
+                data.setFile(b);
+                out.writeObject(data);
+                out.flush();
+                //txt.append("Sent a file ..\n");
+                System.out.println("Sent a file ...");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e, "Error", JOptionPane.ERROR_MESSAGE);
+        }
         
         
     }//GEN-LAST:event_bfActionPerformed
@@ -355,15 +377,20 @@ public class Chat_Server extends javax.swing.JFrame {
         try{
             sktc = new ServerSocket(6001);
             sktf = new ServerSocket(8003);
+            
             while(true)
             {
                 sc = sktc.accept();
                 sf = sktf.accept();
                 
                 din = new DataInputStream(sc.getInputStream());
+                System.out.println("A");
                 dout = new DataOutputStream(sc.getOutputStream());
+                System.out.println("B");
                 in = new ObjectInputStream(sf.getInputStream());
-                
+                System.out.println("C");
+                out = new ObjectOutputStream(sf.getOutputStream());
+                System.out.println("D");
                 ServerThread st = new ServerThread(sf,in);
                 st.start();
                 
@@ -371,7 +398,7 @@ public class Chat_Server extends javax.swing.JFrame {
                 {
 	                msginput = din.readUTF();
                         JPanel p2 = formatLabel(msginput);
-                        System.out.println("T");
+                        
                         JPanel left = new JPanel(new BorderLayout());
                         left.add(p2, BorderLayout.LINE_START);
                         vertical.add(left);
