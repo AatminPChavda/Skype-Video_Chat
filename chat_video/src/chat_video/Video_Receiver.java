@@ -5,9 +5,12 @@
  */
 package chat_video;
 
+import com.github.sarxos.webcam.Webcam;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import javax.swing.ImageIcon;
@@ -35,10 +38,8 @@ public class Video_Receiver extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         img_server = new javax.swing.JLabel();
-
-        jLabel1.setText("jLabel1");
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -48,17 +49,23 @@ public class Video_Receiver extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(33, Short.MAX_VALUE)
-                .addComponent(img_server, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(216, 216, 216))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(img_server, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(img_server, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addGap(12, 12, 12)
+                .addComponent(img_server, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(248, 248, 248)
+                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -101,16 +108,29 @@ public class Video_Receiver extends javax.swing.JFrame {
             }
         });
         
-        ServerSocket server=new ServerSocket(7800);
+        ServerSocket serveri=new ServerSocket(7800);
+        ServerSocket servero=new ServerSocket(8005);
         
         System.out.println("wait......");
         
-        Socket s=server.accept();
+        Socket si=serveri.accept();
+        Socket so=servero.accept();
         
         System.out.println("Connect!!..");
         
-        ObjectInputStream in=new ObjectInputStream(s.getInputStream());
+        ObjectInputStream in=new ObjectInputStream(si.getInputStream());
+        System.out.println("A");
+        
+        ObjectOutputStream out=new ObjectOutputStream(so.getOutputStream());
+        System.out.println("B");
+        
         ImageIcon ic;
+        BufferedImage br;
+        
+        Webcam cam = Webcam.getDefault();
+        cam.open();
+        
+        System.out.println("C");
         
         while(true)
         {
@@ -119,10 +139,16 @@ public class Video_Receiver extends javax.swing.JFrame {
             Image ir = i.getScaledInstance(img_server.getWidth(), img_server.getHeight(),Image.SCALE_SMOOTH);
             ic = new ImageIcon(ir);
             img_server.setIcon(ic);
+            
+            br=cam.getImage();
+            ic=new ImageIcon(br);
+            out.writeObject(ic);
+            out.flush();
+            jLabel2.setIcon(ic);
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JLabel img_server;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
 }

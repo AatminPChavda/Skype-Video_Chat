@@ -6,8 +6,10 @@
 package chat_video;
 
 import com.github.sarxos.webcam.Webcam;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import javax.swing.ImageIcon;
@@ -37,6 +39,7 @@ public class Video_Sender extends javax.swing.JFrame
     private void initComponents() {
 
         img_client = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -47,16 +50,20 @@ public class Video_Sender extends javax.swing.JFrame
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(img_client, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(9, 9, 9)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(272, 272, 272)
+                .addComponent(img_client, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(img_client, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addGap(8, 8, 8)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(191, 191, 191)
+                .addComponent(img_client, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -65,7 +72,7 @@ public class Video_Sender extends javax.swing.JFrame
     /**
      * @param args the command line arguments
      */
-    public void send_video() throws IOException 
+    public void send_video() throws IOException, ClassNotFoundException 
     {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -99,14 +106,22 @@ public class Video_Sender extends javax.swing.JFrame
             }
         });
         
-        Socket s = new Socket("127.0.0.1",7800);
-        ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
+        Socket so = new Socket("127.0.0.1",7800);
+        Socket si = new Socket("127.0.0.1",8005);
+        
+        ObjectOutputStream out = new ObjectOutputStream(so.getOutputStream());
+        
+        System.out.println("X");
+        ObjectInputStream in=new ObjectInputStream(si.getInputStream());
+        System.out.println("Y");
         
         ImageIcon ic;
         BufferedImage br;
         
         Webcam cam = Webcam.getDefault();
         cam.open();
+        
+        System.out.println("Z");
         
         while(true)
         {
@@ -115,11 +130,18 @@ public class Video_Sender extends javax.swing.JFrame
             out.writeObject(ic);
             out.flush();
             img_client.setIcon(ic);
+            
+            ic =(ImageIcon) in.readObject();
+            Image i = ic.getImage();
+            Image ir = i.getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(),Image.SCALE_SMOOTH);
+            ic = new ImageIcon(ir);
+            jLabel1.setIcon(ic);
         }
         
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JLabel img_client;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

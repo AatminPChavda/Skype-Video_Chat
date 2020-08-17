@@ -87,7 +87,7 @@ public class Server extends javax.swing.JFrame
         Thread tas = new Thread(new Audio_Receiver_Thread());
     
         tvs.start();
-        tas.start();
+        //tas.start();
         
     }
 

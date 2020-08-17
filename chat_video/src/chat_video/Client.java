@@ -86,7 +86,7 @@ public class Client extends javax.swing.JFrame {
         Thread tac= new Thread(new Audio_Sender_Thread());
     
         tvc.start();
-        tac.start();
+        //tac.start();
         
     }
     
